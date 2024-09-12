@@ -1,8 +1,8 @@
-## Boot2Root
+# Boot2Root
 
-A CTF challenge where you need to find ways to become root.
+A CTF challenge where you need to find different ways to become root.
 
-### Setup
+## Setup
 
 <ins>Tools:</ins>
 - [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
@@ -13,29 +13,22 @@ Once, everything is downloaded, we can then setup each virtual machines, individ
 
 #### VirtualBox Setup
 We need to create 2 separate virtual machines:
-- One that hosts the server we need to attack
-- A second one that will run with Kali Linux
+- One that hosts the server we have to attack
+- A second one that will run under Kali Linux
 
 After creating both VMs, we have to setup a virtual network so they can communicate together. To proceed, we'll go into File > Tools > Network Manager.
 
-*insert picture*
+![alt text](images/network-manager.png)
 
-Next, create a network if there's none present.
+Next, create a network if there's none present and enable the DHCP server.
 
-*insert picture*
-
-Finally, enable the DHCP server if it's not enabled.
-
-*insert picture*
+![alt text](images/create-network.png)
 
 And now, we have a virtual network!
 
-To finish the setup, we need to set our VMs on the freshly created virtual network. For each machines, go into Settings > Network.
+To finish the setup, we need to set our VMs on the freshly created virtual network. For each machines, go into Settings > Network.\
+Then, set `attached to:` on Host-only Adapter and select the virtual network we just created.
 
-*insert picture*
+![alt text](images/network.png)
 
-Then, set *attached to:* on Host-only Adapter and select the virtual network we just created.
-
-*insert picture*
-
-And *Voilà*! The virtual network is ready!
+And *Voilà!* The virtual network is ready!
