@@ -18,7 +18,7 @@ Then, we execute the script using the following command:
 ./dirty root
 ```
 
-The program creates a thread to exploit the race condition, allowing it to create a new user with root privileges.\
+The program creates a thread that repetitively writes to a copy of the `/etc/passwd` file while simultaneously attempting to read from it. This triggers a race condition, as the file can only be accessed for reading or writing at any given time, allowing the exploit to create a new user with root privileges in the process.\
 Finally, we can log in as the newly created user, `firefart`, who has root privileges, as confirmed by using the **id** command.
 
-Another way to gain `root` access!
+Another way to gain **root** access!
