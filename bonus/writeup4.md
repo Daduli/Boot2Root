@@ -1,4 +1,4 @@
-# Exploit 4: A... secret phase?
+# Exploit 4: A... SECRET PHASE?
 
 While reviewing the source code of the **bomb** binary as the *laurie* user, we notice a function named `secret_phase`, so let's investigate further!
 
