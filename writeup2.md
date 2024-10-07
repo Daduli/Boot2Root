@@ -8,13 +8,13 @@ There’s another method to gain root access on this machine. Since it runs on L
 
 First, we need to copy the `dirty.c` exploit script to our local environment. After that, we'll compile it using the following command:
 
-```
+```sh
 gcc -pthread dirty.c -o dirty -lcrypt
 ```
 
 Then, we execute the script using the following command:
 
-```
+```sh
 ./dirty root
 ```
 

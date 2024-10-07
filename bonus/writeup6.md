@@ -16,15 +16,16 @@ The files are named with five random characters consisting of letters (A-Z) and 
 
 ![pcap files](../images/pcap.png)
 
-It's important to note that the `.pcap` extension indicates a file that contains a network packet capture, which can be analyzed using [Wireshark](https://www.wireshark.org/). Upon examining the contents of a file, we notice that the output differs somewhat from what we encountered earlier in [writeup1](https://github.com/Daduli/Boot2Root/blob/master/writeup1.md).
+It's important to note that the **.pcap** extension indicates a file that contains a network packet capture, which can be analyzed using [Wireshark](https://www.wireshark.org/). Upon examining the contents of a file, we notice that the output differs somewhat from what we encountered earlier in [writeup1](https://github.com/Daduli/Boot2Root/blob/master/writeup1.md).
 
-```c
+```C
 }void useless() {
 
 //file731
 ```
 
 Since we know that the content of the files are not network packet captures from previously, we can conclude that the *.pcap* extension is just a bait, as confirmed by the `file` command. We also know that it contains C code instead.
+
 ```sh
 Z85NC.pcap: ASCII text
 ```
@@ -96,7 +97,7 @@ Next, we will reconstruct the *main()* function using the following command:
 
 Finally, we can compile and execute the *main.c* file to obtain the password.
 
-```
+```sh
 gcc main.c -o password && ./password
 ```
 
